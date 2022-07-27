@@ -1,3 +1,7 @@
+import os
+import json
+from typing import Dict, List, Optional, Union, cast
+import requests
 import pandas as pd
 
 def get_fifa_data():
