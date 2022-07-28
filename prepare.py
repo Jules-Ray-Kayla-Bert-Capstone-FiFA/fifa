@@ -25,7 +25,6 @@ def drop_columns(df):
                         'club_jersey_number', 
                         'club_loaned_from',
                         'nation_jersey_number',
-                        'body_type',
                         'real_face',
                         'release_clause_eur',
                         'player_tags', 
