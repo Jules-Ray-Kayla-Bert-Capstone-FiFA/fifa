@@ -2,6 +2,7 @@ import numpy as np
 import seaborn as sns
 import scipy.stats as stats
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 def handle_missing_values(df):
     """this piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analize better)."""
@@ -131,3 +132,13 @@ def prepped_data(df):
     df = column_positions(df)
     print('After dropping leagues. %d rows. %d cols' % df.shape)
     return df
+
+def split(df):
+    train_and_validate, test = train_test_split(df, random_state=13, test_size=.15)
+    train, validate = train_test_split(train_and_validate, random_state=13, test_size=.2)
+
+    print('Train: %d rows, %d cols' % train.shape)
+    print('Validate: %d rows, %d cols' % validate.shape)
+    print('Test: %d rows, %d cols' % test.shape)
+    
+    return train, validate, test
