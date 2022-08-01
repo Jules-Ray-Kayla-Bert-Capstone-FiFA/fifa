@@ -113,7 +113,7 @@ def column_positions(df):
        'defending_sliding_tackle', 'goalkeeping_diving',
        'goalkeeping_handling', 'goalkeeping_kicking',
        'goalkeeping_positioning', 'goalkeeping_reflexes', 'goalkeeping_speed',
-       'year','fifa_total_player_budget']
+       'year']
     #code to correct sequence
     df = df.reindex(columns=sequence)
     return df
