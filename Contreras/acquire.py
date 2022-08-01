@@ -44,6 +44,14 @@ def get_fifa_data():
         df7['year'] = 2016
         df8['year'] = 2015
         # combining dataframes together
+        df1['fifa_total_player_budget'] = df1.wage_eur.sum()
+        df2['fifa_total_player_budget'] = df2.wage_eur.sum()
+        df3['fifa_total_player_budget'] = df3.wage_eur.sum()
+        df4['fifa_total_player_budget'] = df4.wage_eur.sum()
+        df5['fifa_total_player_budget'] = df5.wage_eur.sum()
+        df6['fifa_total_player_budget'] = df6.wage_eur.sum()
+        df7['fifa_total_player_budget'] = df7.wage_eur.sum()
+        df8['fifa_total_player_budget'] = df8.wage_eur.sum()
         df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8])
         #the following code to make into a csv file
         df.to_csv(filename, index = False)
