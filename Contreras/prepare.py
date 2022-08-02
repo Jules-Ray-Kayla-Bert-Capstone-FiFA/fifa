@@ -95,9 +95,9 @@ def column_positions(df):
         #changing the sequence of the columns
     sequence = ['sofifa_id', 'short_name', 'player_positions', 'overall', 'potential',
        'value_eur', 'wage_eur', 'age', 'height_cm', 'weight_kg',
-       'club_team_id', 'club_name', 'league_name', 'league_level',
+       'club_team_id', 'club_name', 'league_name','nationality_id', 'nationality_name', 'league_level',
        'club_position', 'position', 'club_joined', 'club_contract_valid_until',
-       'nationality_id', 'nationality_name', 'preferred_foot', 'weak_foot',
+        'preferred_foot', 'weak_foot',
        'skill_moves', 'international_reputation', 'work_rate', 'pace',
        'shooting', 'passing', 'dribbling', 'defending', 'physic',
        'attacking_crossing', 'attacking_finishing',
@@ -210,15 +210,51 @@ def wrangle_fifa_data(df):
     df.year_joined = df.year_joined.astype(int)
     #add seniority column
     df['seniority'] = df.year - df.year_joined
+    #encoding
+    df['league_encoded'] = df.league_name.map({'Argentina Primera División': 1,
+                                              'English Premier League': 2,
+                                              'USA Major League Soccer': 3,
+                                              'French Ligue 1': 4,
+                                              'Spain Primera Division': 5,
+                                              'Italian Serie A': 6,
+                                              'German 1. Bundesliga': 7,
+                                              'Turkish Süper Lig': 8,
+                                              'Portuguese Liga ZON SAGRES':9,
+                                              'Mexican Liga MX': 10,
+                                              'Holland Eredivisie': 11,
+                                              'Colombian Liga Postobón': 12,
+                                              'Belgian Jupiler Pro League': 13,
+                                              'Polish T-Mobile Ekstraklasa': 14,
+                                              'Saudi Abdul L. Jameel League': 15,
+                                              'Swedish Allsvenskan': 16,
+                                              'Japanese J. League Division': 17,
+                                              'Norwegian Eliteserien': 18,
+                                              'Chilian Campeonato Nacional': 19,
+                                              'Danish Superliga': 20,
+                                              'Korean K League': 21,
+                                              'Scottish Premiership': 22,
+                                              'Austrian Football Bundesliga': 23,
+                                              'Rep. Ireland Airtricity League': 24,
+                                              'Campeonato Brasileiro Série A': 25,
+                                              'Swiss Super League': 26,
+                                              'Russian Premier League': 27,
+                                              'Australian Hyundai A-League': 28,
+                                              'Chinese Super League': 29,
+                                              'Romanian Liga I': 30,
+                                              'Greek Super League': 31,
+                                              'Ecuadorian Serie A': 32,
+                                              'South African Premier Division': 33,
+                                              'Paraguayan Primera División': 34,
+                                              'Liga de Fútbol Profesional Boliian': 35,
+                                              'Czech Republic Gambrinus Liga': 36,
+                                              'Peruvian Primera División': 37,
+                                              'Uruguayan Primera División': 38,
+                                              'Venezuelan Primera División': 39,
+                                              'Indian Super League': 40,
+                                              'Ukrainian Premier League': 41,
+                                              'Finnish Veikkausliiga': 42,
+                                              'Croatian Prva HNL': 43,
+                                              'UAE Arabian Gulf League': 44,
+                                              'Hungarian Nemzeti Bajnokság I': 45,
+                                              'Cypriot First Division':46})
     return df
-
-
-
-
-
-
-
-
-
-
-
