@@ -259,5 +259,5 @@ def wrangle_fifa_data(df):
                                               'Cypriot First Division':46,
                                               'Japanese J. League Division 1': 47,
                                               'Korean K League 1': 48,
-                                              'Liga de Fútbol Profesional Boliviano 133': 49})
+                                              'Liga de Fútbol Profesional Boliviano': 49})
     return df
