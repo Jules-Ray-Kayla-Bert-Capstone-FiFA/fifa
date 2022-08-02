@@ -256,5 +256,8 @@ def wrangle_fifa_data(df):
                                               'Croatian Prva HNL': 43,
                                               'UAE Arabian Gulf League': 44,
                                               'Hungarian Nemzeti Bajnokság I': 45,
-                                              'Cypriot First Division':46})
+                                              'Cypriot First Division':46,
+                                              'Japanese J. League Division 1': 47,
+                                              'Korean K League 1': 48,
+                                              'Liga de Fútbol Profesional Boliviano 133': 49})
     return df
