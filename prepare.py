@@ -96,7 +96,7 @@ def column_positions(df):
     sequence = ['sofifa_id', 'short_name', 'player_positions', 'overall', 'potential',
        'value_eur', 'wage_eur', 'age', 'height_cm', 'weight_kg',
        'club_team_id', 'club_name', 'league_name','nationality_id', 'nationality_name', 'league_level',
-       'club_position', 'position', 'club_joined', 'club_contract_valid_until',
+       'club_position', 'position', 'club_joined', 'club_contract_valid_until','body_type',
         'preferred_foot', 'weak_foot',
        'skill_moves', 'international_reputation', 'work_rate', 'pace',
        'shooting', 'passing', 'dribbling', 'defending', 'physic',
@@ -129,6 +129,7 @@ def prepped_data(df):
     df = position_column(df)
     # change positions of columns
     df = column_positions(df)
+    #add wrangle function
     df = wrangle_fifa_data(df)
     print('After dropping leagues. %d rows. %d cols' % df.shape)
     return df
