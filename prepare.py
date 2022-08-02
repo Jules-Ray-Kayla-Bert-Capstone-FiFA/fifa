@@ -131,6 +131,8 @@ def prepped_data(df):
     df = column_positions(df)
     #add wrangle function
     df = wrangle_fifa_data(df)
+    #encoded data
+    df = get_encoded(df)
     print('After dropping leagues. %d rows. %d cols' % df.shape)
     return df
 
@@ -261,4 +263,66 @@ def wrangle_fifa_data(df):
                                               'Japanese J. League Division 1': 47,
                                               'Korean K League 1': 48,
                                               'Liga de Fútbol Profesional Boliviano': 49})
+    return df
+
+def get_encoded(df):
+    df['club_position_encoded'] = df.club_position.map({'RW': 1,
+                                              'ST': 2,
+                                              'LW': 3,
+                                              'RCM': 4,
+                                              'GK': 5,
+                                              'CF': 6,
+                                              'CDM':7,
+                                              'LCB': 8,
+                                              'RDM': 9,
+                                              'RS':10,
+                                              'LCM':11,
+                                              'SUB':12,
+                                              'CAM':13,
+                                              'RCB':14,
+                                              'LDM':15,
+                                              'LB':16,
+                                              'RB':17,
+                                              'LM':18,
+                                              'RM':19,
+                                              'CB':20,
+                                              'LS':21,
+                                              'RES':22,
+                                              'RWB':23,
+                                              'LWB':24,
+                                              'LAM':25,
+                                              'LF':26,
+                                              'RAM':27
+                                          })
+    df['work_rate_encoded'] = df.work_rate.map({'Low/Low':1,
+                                                'Low/Medium':2,
+                                                'Low/High':3,
+                                                'Medium/Low':4,
+                                                'Medium/Medium':5,
+                                                'Medium/High':6,
+                                                'High/Low':7,
+                                                'High/Medium':8,
+                                                'High/High':9
+                                          })
+    df['preferred_foot_encoded'] = df.preferred_foot.map({ 'Left': 1,
+                                                          'Right':2
+    })
+    df['age_bins_encoded'] = df.age_bins.map({ 'older':1,
+                                                      'younger':2
+    })
+    df['weight_bins_encoded'] = df.weight_bins.map({ 'slim':1,
+                                                      'average':2,
+                                                    'heavy': 3
+    })
+    df['body_type_encoded'] = df.body_type.map({'Unique':1,
+                                                'Normal (170-185)':2,
+                                                'Lean (170-185)':3,
+                                                'Normal (185+)':4,
+                                                'Lean (185+)':5,
+                                                'Normal (170-)':6,
+                                                'Stocky (185+)':7,
+                                                'Lean (170-)':8,
+                                                'Stocky (170-185)':9,
+                                                'Stocky (170-)':10
+    })
     return df
