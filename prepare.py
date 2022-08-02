@@ -129,6 +129,7 @@ def prepped_data(df):
     df = position_column(df)
     # change positions of columns
     df = column_positions(df)
+    df = wrangle_fifa_data(df)
     print('After dropping leagues. %d rows. %d cols' % df.shape)
     return df
 
@@ -141,3 +142,83 @@ def split(df):
     print('Test: %d rows, %d cols' % test.shape)
     
     return train, validate, test
+
+def wrangle_fifa_data(df):
+    #change numerical data to integers
+    df.pace = df.pace.astype(int)
+    df.shooting = df.shooting.astype(int)
+    df.passing = df.passing.astype(int)
+    df.dribbling = df.dribbling.astype(int)
+    df.defending = df.defending.astype(int)
+    df.physic = df.physic.astype(int)
+    df.goalkeeping_speed = df.goalkeeping_speed.astype(int)
+    #rename columns
+    df = df.rename(columns = {'physic': 'physical',
+                         'attacking_crossing':'crossing',
+                         'attacking_finishing': 'finishing',
+                         'attacking_heading_accuracy': 'heading_accuracy',
+                         'attacking_short_passing': 'short_passing',
+                         'attacking_volleys': 'volleys',
+                         'skill_curve': 'curve',
+                         'skill_fk_accuracy':'fk_accuracy',
+                         'skill_long_passing': 'long_passing',
+                         'skill_ball_control': 'ball_control',
+                         'movement_acceleration': 'acceleration',
+                         'movement_sprint_speed': 'sprint_speed',
+                         'movement_agility': 'agility',
+                         'movement_reactions': 'reactions',
+                         'movement_balance': 'balance',
+                         'power_shot_power': 'shot_power',
+                         'power_jumping': 'jumping',
+                         'power_stamina': 'stamina',
+                         'power_strength' : 'strength',
+                         'power_long_shots': 'long_shots',
+                         'mentality_aggression': 'aggression',
+                         'mentality_interceptions': 'interceptions',
+                         'mentality_positioning': 'positioning',
+                         'mentality_vision': 'vision',
+                         'mentality_penalties': 'penalties',
+                         'defending_marking_awareness': 'marking',
+                         'defending_standing_tackle': 'standing_tackle',
+                         'defending_sliding_tackle': 'sliding_tackle',
+                         'goalkeeping_diving': 'gk_diving',
+                         'goalkeeping_handling': 'gk_handling',
+                         'goalkeeping_kicking': 'gk_kicking',
+                         'goalkeeping_positioning': 'gk_positioning',
+                         'goalkeeping_reflexes': 'gk_reflexes' ,
+                         'goalkeeping_speed': 'gk_speed'
+                                                })
+    #add total wage column
+    df['total_wage'] = df['value_eur'] + df['wage_eur']
+    # change columns to datetime
+    #df.club_joined = pd.to_datetime(df.club_joined)
+    #create age bins players younger than 30 are considered younger, else, older
+    df['age_bins'] = pd.cut(df['age'], bins = [0, 29, np.inf], labels = ['younger', 'older'])
+    #create height bins
+    df['height_bins'] = pd.cut(df['height_cm'], bins = 3, labels = ['short', 'medium', 'tall'])
+    #create weight bins
+    df['weight_bins'] = pd.cut(df['weight_kg'], bins = 3, labels = ['slim', 'average', 'heavy'])
+    #only maintain league_level 1
+    df = df[df.league_level == 1.0]
+    #drop league_level
+    df = df.drop(columns = ['league_level'])
+    df = df.dropna()
+    #expand the club_joined to get only the year from YYYY-MM-DD
+    df['club_joined'] = df.club_joined.astype('str')
+    df['year_joined'] = df.club_joined.str.split('-', expand = True)[0]
+    #change joined year to int
+    df.year_joined = df.year_joined.astype(int)
+    #add seniority column
+    df['seniority'] = df.year - df.year_joined
+    return df
+
+
+
+
+
+
+
+
+
+
+
