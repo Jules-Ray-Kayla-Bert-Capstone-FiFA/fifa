@@ -95,9 +95,9 @@ def column_positions(df):
         #changing the sequence of the columns
     sequence = ['sofifa_id', 'short_name', 'player_positions', 'overall', 'potential',
        'value_eur', 'wage_eur', 'age', 'height_cm', 'weight_kg',
-       'club_team_id', 'club_name', 'league_name', 'league_level',
+       'club_team_id', 'club_name', 'league_name','nationality_id', 'nationality_name', 'league_level',
        'club_position', 'position', 'club_joined', 'club_contract_valid_until',
-       'nationality_id', 'nationality_name', 'preferred_foot', 'weak_foot',
+        'preferred_foot', 'weak_foot',
        'skill_moves', 'international_reputation', 'work_rate', 'pace',
        'shooting', 'passing', 'dribbling', 'defending', 'physic',
        'attacking_crossing', 'attacking_finishing',
@@ -129,6 +129,7 @@ def prepped_data(df):
     df = position_column(df)
     # change positions of columns
     df = column_positions(df)
+    df = wrangle_fifa_data(df)
     print('After dropping leagues. %d rows. %d cols' % df.shape)
     return df
 
@@ -141,3 +142,119 @@ def split(df):
     print('Test: %d rows, %d cols' % test.shape)
     
     return train, validate, test
+
+def wrangle_fifa_data(df):
+    #change numerical data to integers
+    df.pace = df.pace.astype(int)
+    df.shooting = df.shooting.astype(int)
+    df.passing = df.passing.astype(int)
+    df.dribbling = df.dribbling.astype(int)
+    df.defending = df.defending.astype(int)
+    df.physic = df.physic.astype(int)
+    df.goalkeeping_speed = df.goalkeeping_speed.astype(int)
+    #rename columns
+    df = df.rename(columns = {'physic': 'physical',
+                         'attacking_crossing':'crossing',
+                         'attacking_finishing': 'finishing',
+                         'attacking_heading_accuracy': 'heading_accuracy',
+                         'attacking_short_passing': 'short_passing',
+                         'attacking_volleys': 'volleys',
+                         'skill_curve': 'curve',
+                         'skill_fk_accuracy':'fk_accuracy',
+                         'skill_long_passing': 'long_passing',
+                         'skill_ball_control': 'ball_control',
+                         'movement_acceleration': 'acceleration',
+                         'movement_sprint_speed': 'sprint_speed',
+                         'movement_agility': 'agility',
+                         'movement_reactions': 'reactions',
+                         'movement_balance': 'balance',
+                         'power_shot_power': 'shot_power',
+                         'power_jumping': 'jumping',
+                         'power_stamina': 'stamina',
+                         'power_strength' : 'strength',
+                         'power_long_shots': 'long_shots',
+                         'mentality_aggression': 'aggression',
+                         'mentality_interceptions': 'interceptions',
+                         'mentality_positioning': 'positioning',
+                         'mentality_vision': 'vision',
+                         'mentality_penalties': 'penalties',
+                         'defending_marking_awareness': 'marking',
+                         'defending_standing_tackle': 'standing_tackle',
+                         'defending_sliding_tackle': 'sliding_tackle',
+                         'goalkeeping_diving': 'gk_diving',
+                         'goalkeeping_handling': 'gk_handling',
+                         'goalkeeping_kicking': 'gk_kicking',
+                         'goalkeeping_positioning': 'gk_positioning',
+                         'goalkeeping_reflexes': 'gk_reflexes' ,
+                         'goalkeeping_speed': 'gk_speed'
+                                                })
+    #add total wage column
+    df['total_wage'] = df['value_eur'] + df['wage_eur']
+    # change columns to datetime
+    #df.club_joined = pd.to_datetime(df.club_joined)
+    #create age bins players younger than 30 are considered younger, else, older
+    df['age_bins'] = pd.cut(df['age'], bins = [0, 29, np.inf], labels = ['younger', 'older'])
+    #create height bins
+    df['height_bins'] = pd.cut(df['height_cm'], bins = 3, labels = ['short', 'medium', 'tall'])
+    #create weight bins
+    df['weight_bins'] = pd.cut(df['weight_kg'], bins = 3, labels = ['slim', 'average', 'heavy'])
+    #only maintain league_level 1
+    df = df[df.league_level == 1.0]
+    #drop league_level
+    df = df.drop(columns = ['league_level'])
+    df = df.dropna()
+    #expand the club_joined to get only the year from YYYY-MM-DD
+    df['club_joined'] = df.club_joined.astype('str')
+    df['year_joined'] = df.club_joined.str.split('-', expand = True)[0]
+    #change joined year to int
+    df.year_joined = df.year_joined.astype(int)
+    #add seniority column
+    df['seniority'] = df.year - df.year_joined
+    #encoding
+    df['league_encoded'] = df.league_name.map({'Argentina Primera División': 1,
+                                              'English Premier League': 2,
+                                              'USA Major League Soccer': 3,
+                                              'French Ligue 1': 4,
+                                              'Spain Primera Division': 5,
+                                              'Italian Serie A': 6,
+                                              'German 1. Bundesliga': 7,
+                                              'Turkish Süper Lig': 8,
+                                              'Portuguese Liga ZON SAGRES':9,
+                                              'Mexican Liga MX': 10,
+                                              'Holland Eredivisie': 11,
+                                              'Colombian Liga Postobón': 12,
+                                              'Belgian Jupiler Pro League': 13,
+                                              'Polish T-Mobile Ekstraklasa': 14,
+                                              'Saudi Abdul L. Jameel League': 15,
+                                              'Swedish Allsvenskan': 16,
+                                              'Japanese J. League Division': 17,
+                                              'Norwegian Eliteserien': 18,
+                                              'Chilian Campeonato Nacional': 19,
+                                              'Danish Superliga': 20,
+                                              'Korean K League': 21,
+                                              'Scottish Premiership': 22,
+                                              'Austrian Football Bundesliga': 23,
+                                              'Rep. Ireland Airtricity League': 24,
+                                              'Campeonato Brasileiro Série A': 25,
+                                              'Swiss Super League': 26,
+                                              'Russian Premier League': 27,
+                                              'Australian Hyundai A-League': 28,
+                                              'Chinese Super League': 29,
+                                              'Romanian Liga I': 30,
+                                              'Greek Super League': 31,
+                                              'Ecuadorian Serie A': 32,
+                                              'South African Premier Division': 33,
+                                              'Paraguayan Primera División': 34,
+                                              'Liga de Fútbol Profesional Boliian': 35,
+                                              'Czech Republic Gambrinus Liga': 36,
+                                              'Peruvian Primera División': 37,
+                                              'Uruguayan Primera División': 38,
+                                              'Venezuelan Primera División': 39,
+                                              'Indian Super League': 40,
+                                              'Ukrainian Premier League': 41,
+                                              'Finnish Veikkausliiga': 42,
+                                              'Croatian Prva HNL': 43,
+                                              'UAE Arabian Gulf League': 44,
+                                              'Hungarian Nemzeti Bajnokság I': 45,
+                                              'Cypriot First Division':46})
+    return df
