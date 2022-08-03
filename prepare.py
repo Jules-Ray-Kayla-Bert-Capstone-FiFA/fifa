@@ -4,8 +4,33 @@ import scipy.stats as stats
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+""" This prepare.py folder is made for the purpose of being imported into the final notebook. the only function that should be used in the final notebook is "prepped_data(df)".
+prepped_data(df) is an acumulation of all the other functions that were made to in order to clean data from the original dataset that had null values and unencoded data."""
+
+
+#################################################################################################################################################################
+
+def prepped_data(df):
+    """ !!!!!!!!!!!!!!!     Please onlyuse this specific function for final notebook      !!!!!!!!!!!!!!!"""
+    # handles missing values
+    df = handle_missing_values(df)
+    #returns only league 1 players
+    df = only_league_one(df)
+    #clarify position of players
+    df = position_column(df)
+    # change positions of columns
+    df = column_positions(df)
+    #add wrangle function
+    df = wrangle_fifa_data(df)
+    #encoded data
+    df = get_encoded(df)
+    print('After clening the data and adding encoded columns. %d rows. %d cols' % df.shape)
+    return df
+
+#################################################################################################################################################################
+
 def handle_missing_values(df):
-    """this piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analize better)."""
+    """ This piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analize better). """
     print ('Before dropping nulls, %d rows, %d cols' % df.shape)
     #drop collumns
     df = drop_columns(df)
@@ -17,7 +42,7 @@ def handle_missing_values(df):
     return df
 
 def drop_columns(df):
-    """ using this function to drop columns that i wont be using for exploration stage of this project"""
+    """ using this function to drop columns that i wont be using for exploration stage of this project """
     # drop function to remove columns
     df = df.drop(columns = ['player_url', 
                         'long_name', 
@@ -42,6 +67,7 @@ def drop_columns(df):
     return df
 
 def goal_keeper_stats(df):
+    "replaces na values with 0 for goal keepers that do not have regular player stats"
     #add 0 values to non goal keeper players
     df['goalkeeping_speed'].fillna("0", inplace = True)
     df['defending'].fillna("0", inplace = True)
@@ -54,7 +80,7 @@ def goal_keeper_stats(df):
     return df
 
 def only_league_one(df):
-    """ this function only lets us look at league 1 players"""
+    """ This function only lets us look at league 1 players only and removes the other leagues"""
     # returns only league 1 players.
     df = df[df.league_level == 1.0]
     return df
@@ -92,6 +118,7 @@ def position_column(df):
     return df
 
 def column_positions(df):
+    """ Rearranges columns """
         #changing the sequence of the columns
     sequence = ['sofifa_id', 'short_name', 'player_positions', 'overall', 'potential',
        'value_eur', 'wage_eur', 'age', 'height_cm', 'weight_kg',
@@ -119,24 +146,9 @@ def column_positions(df):
     return df
 
 
-def prepped_data(df):
-    """ !!!!!!!!!!!!!!!     Please onlyuse this specific function for final notebook      !!!!!!!!!!!!!!!"""
-    # handles missing values
-    df = handle_missing_values(df)
-    #returns only league 1 players
-    df = only_league_one(df)
-    #clarify position of players
-    df = position_column(df)
-    # change positions of columns
-    df = column_positions(df)
-    #add wrangle function
-    df = wrangle_fifa_data(df)
-    #encoded data
-    df = get_encoded(df)
-    print('After dropping leagues. %d rows. %d cols' % df.shape)
-    return df
 
 def split(df):
+    """ This function splits pir data into train, validate, and test """
     train_and_validate, test = train_test_split(df, random_state=13, test_size=.15)
     train, validate = train_test_split(train_and_validate, random_state=13, test_size=.2)
 
@@ -147,6 +159,7 @@ def split(df):
     return train, validate, test
 
 def wrangle_fifa_data(df):
+    """ This funcion, renames collumns, encodes leuges, makes values into integers, and adds aditional columns to data set"""
     #change numerical data to integers
     df.pace = df.pace.astype(int)
     df.shooting = df.shooting.astype(int)
@@ -266,6 +279,7 @@ def wrangle_fifa_data(df):
     return df
 
 def get_encoded(df):
+    """ This function encodes club positions, work_rate, preferred_foot, age, weight and body."""
     df['club_position_encoded'] = df.club_position.map({'RW': 1,
                                               'ST': 2,
                                               'LW': 3,
