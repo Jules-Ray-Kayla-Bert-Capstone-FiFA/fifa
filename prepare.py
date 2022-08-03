@@ -11,7 +11,7 @@ prepped_data(df) is an acumulation of all the other functions that were made to 
 #################################################################################################################################################################
 
 def prepped_data(df):
-    """ !!!!!!!!!!!!!!!     Please onlyuse this specific function for final notebook      !!!!!!!!!!!!!!!"""
+    """ !!!!!!!!!!!!!!!     Please only use this specific function for final notebook      !!!!!!!!!!!!!!!"""
     # handles missing values
     df = handle_missing_values(df)
     #returns only league 1 players
