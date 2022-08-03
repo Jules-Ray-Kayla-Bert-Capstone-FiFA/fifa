@@ -10,7 +10,7 @@ from sklearn.metrics import classification_report
 
 
 
-def score_models(X_train, y_train, X_val, y_val):
+def score_models(X_train, y_train, X_validate, y_validate):
     '''
     Score multiple models on train and val datasets.
     Print classification reports to decide on a model to test.
@@ -25,8 +25,8 @@ def score_models(X_train, y_train, X_val, y_val):
         model.fit(X_train, y_train)
         actual_train = y_train
         predicted_train = model.predict(X_train)
-        actual_val = y_val
-        predicted_val = model.predict(X_val)
+        actual_val = y_validate
+        predicted_val = model.predict(X_validate)
         print(model)
         print('')
         print('train score: ')
