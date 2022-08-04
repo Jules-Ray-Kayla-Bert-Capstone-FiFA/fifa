@@ -67,3 +67,4 @@ def wage_contract_chart(train):
     fig.update_layout(title_text='Wages and Contract length', title_x=0.5)
     fig.show()
 
+##################################################################################################################################################
