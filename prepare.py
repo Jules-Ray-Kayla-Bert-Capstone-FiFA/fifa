@@ -393,3 +393,46 @@ def get_encoded(df):
                                                 
    
     return df
+
+def split_positions(df):
+    goalkeepers = df[(df.club_position == 'GK')]
+    forwards = df[(df.club_position == 'ST') | (df.club_position == 'RS') | (df.club_position == 'LS') | (df.club_position == 'LW') | (df.club_position == 'RW') | (df.club_position == 'LF') | (df.club_position == 'CF')]
+    midfielders = df[(df.club_position == 'LCM') | (df.club_position == 'RCM') | (df.club_position == 'RM') | (df.club_position == 'LM') | (df.club_position == 'CAM') | (df.club_position == 'LDM') | (df.club_position == 'RDM') | (df.club_position == 'CDM') | (df.club_position == 'LAM') | (df.club_position == 'RAM')] 
+    defenders = df[(df.club_position == 'RCB') | (df.club_position == 'LCB') | (df.club_position == 'LB') | (df.club_position == 'RB') | (df.club_position == 'CB') | (df.club_position == 'RWB') | (df.club_position == 'LWB')]
+    reserve = df[df.club_position == 'RES']
+    substitute = df[df.club_position == 'SUB']
+
+    return goalkeepers, forwards, midfielders, defenders, reserve, substitute
+
+def split_reserve_players(reserve):
+    reserve['player_positions'] = reserve['player_positions'].str.split(',').str[0]
+    df_reserve_goalkeepers = reserve[reserve.player_positions == 'GK']
+    df_reserve_forwards = reserve[(reserve.player_positions == 'ST') | (reserve.player_positions == 'RW') | (reserve.player_positions == 'LW') | (reserve.player_positions == 'CF')]
+    df_reserve_midfielders = reserve[(reserve.player_positions == 'CM') | (reserve.player_positions == 'CDM') | (reserve.player_positions == 'CAM') | (reserve.player_positions == 'RM') | (reserve.player_positions == 'LM')]
+    df_reserve_defenders = reserve[(reserve.player_positions == 'CB') | (reserve.player_positions == 'LB') | (reserve.player_positions == 'RB') | (reserve.player_positions == 'LWB') | (reserve.player_positions == 'RWB')]
+
+    return df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders
+
+def split_substitute_players(substitute):
+    substitute['player_positions'] = substitute['player_positions'].str.split(',').str[0]
+    df_substitute_goalkeeper = substitute[substitute.player_positions == 'GK']
+    df_substitute_forward = substitute[(substitute.player_positions == 'ST') | (substitute.player_positions == 'RW') | (substitute.player_positions == 'LW') | (substitute.player_positions == 'CF')]
+    df_substitute_midfielders = substitute[(substitute.player_positions == 'CM') | (substitute.player_positions == 'CDM') | (substitute.player_positions == 'CAM') | (substitute.player_positions == 'LM') | (substitute.player_positions == 'RM')]
+    df_substitute_defenders = substitute[(substitute.player_positions == 'CB') | (substitute.player_positions == 'LB') | (substitute.player_positions == 'RB') | (substitute.player_positions == 'RWB') | (substitute.player_positions == 'LWB')]
+
+    return df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders
+
+def concat_player_positions(goalkeepers, forwards, midfielders, defenders, df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders, df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders):
+    goalkeeper_df = pd.concat([goalkeepers, df_substitute_goalkeeper, df_reserve_goalkeepers], axis=0)
+    forward_df = pd.concat([forwards, df_substitute_forward, df_reserve_forwards], axis=0)
+    midfielder_df = pd.concat([midfielders, df_substitute_midfielders, df_reserve_midfielders], axis=0)
+    defender_df = pd.concat([defenders, df_substitute_defenders, df_reserve_defenders], axis=0)
+
+    return goalkeeper_df, forward_df, midfielder_df, defender_df
+
+def acquire_players_by_position(df):
+    goalkeepers, forwards, midfielders, defenders, reserve, substitute = split_positions(df)
+    df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders = split_reserve_players(reserve)
+    df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders = split_substitute_players(substitute)
+    goalkeeper_df, forward_df, midfielder_df, defender_df = concat_player_positions(goalkeepers, forwards, midfielders, defenders, df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders, df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders)
+    return goalkeeper_df, forward_df, midfielder_df, defender_df
