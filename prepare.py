@@ -116,37 +116,7 @@ def position_column(df):
                                        'RAM': 'Right Attacking Midfield'
                         })
     
-    #add a field position column
-    df['field_position'] = df.club_position.map({'ST': 'Forward',
-                                                 'CF': 'Forward',
-                                                 'LF': 'Forward',
-                                                 'LW': 'Forward',
-                                                 'RW': 'Forward',
-                                                 'LS': 'Forward',
-                                                 'RS': 'Forward',
-                                                 'LM': 'Midfielder', 
-                                                 'RM': 'Midfielder', 
-                                                 'LAM': 'Midfielder', 
-                                                 'RAM': 'Midfielder', 
-                                                 'CAM':'Midfielder', 
-                                                 'LDM': 'Midfielder', 
-                                                 'RDM': 'Midfielder', 
-                                                 'CDM': 'Midfielder', 
-                                                 'LCM': 'Midfielder', 
-                                                 'RCM': 'Midfielder',
-                                                 'CB': 'Defender', 
-                                                 'LB': 'Defender', 
-                                                 'LCB': 'Defender', 
-                                                 'RCB': 'Defender', 
-                                                 'RB':'Defender', 
-                                                 'LWB': 'Defender', 
-                                                 'RWB': 'Defender',
-                                                 'GK': 'Goalkeeper',
-                                                 'RES': 'Reserves',
-                                                 'SUB': 'Subs'  
 
-                                                })
-    return df
 
 def column_positions(df):
     """ Rearranges columns """
