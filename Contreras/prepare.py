@@ -24,13 +24,13 @@ def prepped_data(df):
     df = wrangle_fifa_data(df)
     #encoded data
     df = get_encoded(df)
-    print('After clening the data and adding encoded columns. %d rows. %d cols' % df.shape)
+    print('After cleaning the data and adding additional columns there are: %d rows. %d cols' % df.shape)
     return df
 
 #################################################################################################################################################################
 
 def handle_missing_values(df):
-    """ This piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analize better). """
+    """ This piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analyze better). """
     print ('Before dropping nulls, %d rows, %d cols' % df.shape)
     #drop collumns
     df = drop_columns(df)
@@ -42,7 +42,7 @@ def handle_missing_values(df):
     return df
 
 def drop_columns(df):
-    """ using this function to drop columns that i wont be using for exploration stage of this project """
+    """ This function accepts a dataframe and and removes columns that will be unused. """
     # drop function to remove columns
     df = df.drop(columns = ['player_url', 
                         'long_name', 
@@ -67,7 +67,7 @@ def drop_columns(df):
     return df
 
 def goal_keeper_stats(df):
-    "replaces na values with 0 for goal keepers that do not have regular player stats"
+    """ Replaces na values with 0 for goal keepers, players that do not have regular player stats. """
     #add 0 values to non goal keeper players
     df['goalkeeping_speed'].fillna("0", inplace = True)
     df['defending'].fillna("0", inplace = True)
@@ -80,24 +80,24 @@ def goal_keeper_stats(df):
     return df
 
 def only_league_one(df):
-    """ This function only lets us look at league 1 players only and removes the other leagues"""
+    """ This function subsets the data to use only players that are considered to be league one players. """
     # returns only league 1 players.
     df = df[df.league_level == 1.0]
     return df
 
 def position_column(df):
-    """ defines players positions """
+    """ This function accepts a dataframe, and creates new columns to define players and field positions. """
     df['position'] = df.club_position.map({'RW':'Right Wing',
                                        'ST': 'Striker',
                                        'LW': 'Left Wing',
-                                       'RCM': 'Right (off-centre) Centre Midfield',
+                                       'RCM': 'Right Centre Midfield',
                                        'GK': 'Goalkeeper',
                                        'CF': 'Centre Forward',
                                        'CDM': 'Centre Defensive Midfield',
                                        'LCB': 'Left Centre Back',
                                        'RDM':'Right Defensive Midfield',
                                        'RS': 'Right Striker',
-                                       'LCM':'Left (off-centre) Centre Midfield',
+                                       'LCM':'Left Centre Midfield',
                                        'SUB': 'Substitute',
                                        'CAM': 'Centre Attacking Midfield',
                                        'RCB':'Right Centre Back',
@@ -115,15 +115,48 @@ def position_column(df):
                                        'LF': 'Left Forward',
                                        'RAM': 'Right Attacking Midfield'
                         })
+    
+    #add a field position column
+    df['field_position'] = df.club_position.map({'ST': 'Forward',
+                                                 'CF': 'Forward',
+                                                 'LF': 'Forward',
+                                                 'LW': 'Forward',
+                                                 'RW': 'Forward',
+                                                 'LS': 'Forward',
+                                                 'RS': 'Forward',
+                                                 'LM': 'Midfielder', 
+                                                 'RM': 'Midfielder', 
+                                                 'LAM': 'Midfielder', 
+                                                 'RAM': 'Midfielder', 
+                                                 'CAM':'Midfielder', 
+                                                 'LDM': 'Midfielder', 
+                                                 'RDM': 'Midfielder', 
+                                                 'CDM': 'Midfielder', 
+                                                 'LCM': 'Midfielder', 
+                                                 'RCM': 'Midfielder',
+                                                 'CB': 'Defender', 
+                                                 'LB': 'Defender', 
+                                                 'LCB': 'Defender', 
+                                                 'RCB': 'Defender', 
+                                                 'RB':'Defender', 
+                                                 'LWB': 'Defender', 
+                                                 'RWB': 'Defender',
+                                                 'GK': 'Goalkeeper',
+                                                 'RES': 'Reserves',
+                                                 'SUB': 'Subs'  
+
+                                                })
     return df
+    
+
 
 def column_positions(df):
-    """ Rearranges columns """
+    """ This function accepts a dataframe and rearranges columns in the desired sequence. """
         #changing the sequence of the columns
     sequence = ['sofifa_id', 'short_name', 'player_positions', 'overall', 'potential',
        'value_eur', 'wage_eur', 'age', 'height_cm', 'weight_kg',
        'club_team_id', 'club_name', 'league_name','nationality_id', 'nationality_name', 'league_level',
-       'club_position', 'position', 'club_joined', 'club_contract_valid_until','body_type',
+       'club_position', 'position', 'field_position', 'club_joined', 'club_contract_valid_until','body_type',
         'preferred_foot', 'weak_foot',
        'skill_moves', 'international_reputation', 'work_rate', 'pace',
        'shooting', 'passing', 'dribbling', 'defending', 'physic',
@@ -148,9 +181,29 @@ def column_positions(df):
 
 
 def split(df):
-    """ This function splits pir data into train, validate, and test """
-    train_and_validate, test = train_test_split(df, random_state=13, test_size=.15)
-    train, validate = train_test_split(train_and_validate, random_state=13, test_size=.2)
+    """ This function separates the data frame by years for the purpose of splitting our data into train, validate and test."""
+    # data for year 2015
+    y1 = df[(df.year == 2015)]
+    # data for year 2016
+    y2 = df[(df.year == 2016)]
+    # data for year 2017
+    y3 = df[(df.year == 2017)]
+    # data for year 2018
+    y4 = df[(df.year == 2018)]
+    # data for year 2019
+    y5 = df[(df.year == 2019)]
+    # data for year 2020
+    y6 = df[(df.year == 2020)]
+    # data for year 2021
+    y7 = df[(df.year == 2021)]
+    # data for year 2022
+    y8 = df[(df.year == 2022)]
+    # combining the data from years 2015 - 2019 into train
+    train = pd.concat([y1,y2,y3,y4,y5])
+    # combining data from years 2020 - 2021 into validate
+    validate = pd.concat([y6,y7])
+    # data for 2022 for test 
+    test = pd.concat([y8])
 
     print('Train: %d rows, %d cols' % train.shape)
     print('Validate: %d rows, %d cols' % validate.shape)
@@ -159,7 +212,7 @@ def split(df):
     return train, validate, test
 
 def wrangle_fifa_data(df):
-    """ This funcion, renames collumns, encodes leuges, makes values into integers, and adds aditional columns to data set"""
+    """ This function accepts a dataframe, renames columns, encodes leagues, makes values into integers, and adds additional columns to data set. """
     #change numerical data to integers
     df.pace = df.pace.astype(int)
     df.shooting = df.shooting.astype(int)
@@ -236,7 +289,77 @@ def wrangle_fifa_data(df):
     df.year_joined = df.year_joined.astype(int)
     #add seniority column
     df['seniority'] = df.year - df.year_joined
-    #encoding
+   
+    return df
+
+def get_encoded(df):
+    """ This function encodes club positions, work_rate, preferred_foot, age, weight, body weight, and leagues. """
+    df['club_position_encoded'] = df.club_position.map({'RW': 1,
+                                              'ST': 2,
+                                              'LW': 3,
+                                              'RCM': 4,
+                                              'GK': 5,
+                                              'CF': 6,
+                                              'CDM':7,
+                                              'LCB': 8,
+                                              'RDM': 9,
+                                              'RS':10,
+                                              'LCM':11,
+                                              'SUB':12,
+                                              'CAM':13,
+                                              'RCB':14,
+                                              'LDM':15,
+                                              'LB':16,
+                                              'RB':17,
+                                              'LM':18,
+                                              'RM':19,
+                                              'CB':20,
+                                              'LS':21,
+                                              'RES':22,
+                                              'RWB':23,
+                                              'LWB':24,
+                                              'LAM':25,
+                                              'LF':26,
+                                              'RAM':27
+                                          })
+    
+    df['work_rate_encoded'] = df.work_rate.map({'Low/Low':1,
+                                                'Low/Medium':2,
+                                                'Low/High':3,
+                                                'Medium/Low':4,
+                                                'Medium/Medium':5,
+                                                'Medium/High':6,
+                                                'High/Low':7,
+                                                'High/Medium':8,
+                                                'High/High':9
+                                          })
+    
+    df['preferred_foot_encoded'] = df.preferred_foot.map({ 'Left': 1,
+                                                          'Right':2
+    })
+    
+    df['age_bins_encoded'] = df.age_bins.map({ 'older':1,
+                                                      'younger':2
+    })
+    
+    df['weight_bins_encoded'] = df.weight_bins.map({ 'slim':1,
+                                                      'average':2,
+                                                    'heavy': 3
+    })
+    
+    df['body_type_encoded'] = df.body_type.map({'Unique':1,
+                                                'Normal (170-185)':2,
+                                                'Lean (170-185)':3,
+                                                'Normal (185+)':4,
+                                                'Lean (185+)':5,
+                                                'Normal (170-)':6,
+                                                'Stocky (185+)':7,
+                                                'Lean (170-)':8,
+                                                'Stocky (170-185)':9,
+                                                'Stocky (170-)':10
+                                                
+                                                 })
+     
     df['league_encoded'] = df.league_name.map({'Argentina Primera División': 1,
                                               'English Premier League': 2,
                                               'USA Major League Soccer': 3,
@@ -285,68 +408,51 @@ def wrangle_fifa_data(df):
                                               'Cypriot First Division':46,
                                               'Japanese J. League Division 1': 47,
                                               'Korean K League 1': 48,
-                                              'Liga de Fútbol Profesional Boliviano': 49})
+                                              'Liga de Fútbol Profesional Boliviano': 49
+                                              })                                            
+                                                
+   
     return df
 
-def get_encoded(df):
-    """ This function encodes club positions, work_rate, preferred_foot, age, weight and body."""
-    df['club_position_encoded'] = df.club_position.map({'RW': 1,
-                                              'ST': 2,
-                                              'LW': 3,
-                                              'RCM': 4,
-                                              'GK': 5,
-                                              'CF': 6,
-                                              'CDM':7,
-                                              'LCB': 8,
-                                              'RDM': 9,
-                                              'RS':10,
-                                              'LCM':11,
-                                              'SUB':12,
-                                              'CAM':13,
-                                              'RCB':14,
-                                              'LDM':15,
-                                              'LB':16,
-                                              'RB':17,
-                                              'LM':18,
-                                              'RM':19,
-                                              'CB':20,
-                                              'LS':21,
-                                              'RES':22,
-                                              'RWB':23,
-                                              'LWB':24,
-                                              'LAM':25,
-                                              'LF':26,
-                                              'RAM':27
-                                          })
-    df['work_rate_encoded'] = df.work_rate.map({'Low/Low':1,
-                                                'Low/Medium':2,
-                                                'Low/High':3,
-                                                'Medium/Low':4,
-                                                'Medium/Medium':5,
-                                                'Medium/High':6,
-                                                'High/Low':7,
-                                                'High/Medium':8,
-                                                'High/High':9
-                                          })
-    df['preferred_foot_encoded'] = df.preferred_foot.map({ 'Left': 1,
-                                                          'Right':2
-    })
-    df['age_bins_encoded'] = df.age_bins.map({ 'older':1,
-                                                      'younger':2
-    })
-    df['weight_bins_encoded'] = df.weight_bins.map({ 'slim':1,
-                                                      'average':2,
-                                                    'heavy': 3
-    })
-    df['body_type_encoded'] = df.body_type.map({'Unique':1,
-                                                'Normal (170-185)':2,
-                                                'Lean (170-185)':3,
-                                                'Normal (185+)':4,
-                                                'Lean (185+)':5,
-                                                'Normal (170-)':6,
-                                                'Stocky (185+)':7,
-                                                'Lean (170-)':8,
-                                                'Stocky (170-185)':9,
-                                                'Stocky (170-)':10
-    })
-    return df
+def split_positions(df):
+    goalkeepers = df[(df.club_position == 'GK')]
+    forwards = df[(df.club_position == 'ST') | (df.club_position == 'RS') | (df.club_position == 'LS') | (df.club_position == 'LW') | (df.club_position == 'RW') | (df.club_position == 'LF') | (df.club_position == 'CF')]
+    midfielders = df[(df.club_position == 'LCM') | (df.club_position == 'RCM') | (df.club_position == 'RM') | (df.club_position == 'LM') | (df.club_position == 'CAM') | (df.club_position == 'LDM') | (df.club_position == 'RDM') | (df.club_position == 'CDM') | (df.club_position == 'LAM') | (df.club_position == 'RAM')] 
+    defenders = df[(df.club_position == 'RCB') | (df.club_position == 'LCB') | (df.club_position == 'LB') | (df.club_position == 'RB') | (df.club_position == 'CB') | (df.club_position == 'RWB') | (df.club_position == 'LWB')]
+    reserve = df[df.club_position == 'RES']
+    substitute = df[df.club_position == 'SUB']
+
+    return goalkeepers, forwards, midfielders, defenders, reserve, substitute
+
+def split_reserve_players(reserve):
+    reserve['player_positions'] = reserve['player_positions'].str.split(',').str[0]
+    df_reserve_goalkeepers = reserve[reserve.player_positions == 'GK']
+    df_reserve_forwards = reserve[(reserve.player_positions == 'ST') | (reserve.player_positions == 'RW') | (reserve.player_positions == 'LW') | (reserve.player_positions == 'CF')]
+    df_reserve_midfielders = reserve[(reserve.player_positions == 'CM') | (reserve.player_positions == 'CDM') | (reserve.player_positions == 'CAM') | (reserve.player_positions == 'RM') | (reserve.player_positions == 'LM')]
+    df_reserve_defenders = reserve[(reserve.player_positions == 'CB') | (reserve.player_positions == 'LB') | (reserve.player_positions == 'RB') | (reserve.player_positions == 'LWB') | (reserve.player_positions == 'RWB')]
+
+    return df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders
+
+def split_substitute_players(substitute):
+    substitute['player_positions'] = substitute['player_positions'].str.split(',').str[0]
+    df_substitute_goalkeeper = substitute[substitute.player_positions == 'GK']
+    df_substitute_forward = substitute[(substitute.player_positions == 'ST') | (substitute.player_positions == 'RW') | (substitute.player_positions == 'LW') | (substitute.player_positions == 'CF')]
+    df_substitute_midfielders = substitute[(substitute.player_positions == 'CM') | (substitute.player_positions == 'CDM') | (substitute.player_positions == 'CAM') | (substitute.player_positions == 'LM') | (substitute.player_positions == 'RM')]
+    df_substitute_defenders = substitute[(substitute.player_positions == 'CB') | (substitute.player_positions == 'LB') | (substitute.player_positions == 'RB') | (substitute.player_positions == 'RWB') | (substitute.player_positions == 'LWB')]
+
+    return df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders
+
+def concat_player_positions(goalkeepers, forwards, midfielders, defenders, df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders, df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders):
+    goalkeeper_df = pd.concat([goalkeepers, df_substitute_goalkeeper, df_reserve_goalkeepers], axis=0)
+    forward_df = pd.concat([forwards, df_substitute_forward, df_reserve_forwards], axis=0)
+    midfielder_df = pd.concat([midfielders, df_substitute_midfielders, df_reserve_midfielders], axis=0)
+    defender_df = pd.concat([defenders, df_substitute_defenders, df_reserve_defenders], axis=0)
+
+    return goalkeeper_df, forward_df, midfielder_df, defender_df
+
+def acquire_players_by_position(df):
+    goalkeepers, forwards, midfielders, defenders, reserve, substitute = split_positions(df)
+    df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders = split_reserve_players(reserve)
+    df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders = split_substitute_players(substitute)
+    goalkeeper_df, forward_df, midfielder_df, defender_df = concat_player_positions(goalkeepers, forwards, midfielders, defenders, df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders, df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders)
+    return goalkeeper_df, forward_df, midfielder_df, defender_df

@@ -181,9 +181,29 @@ def column_positions(df):
 
 
 def split(df):
-    """ This function accepts a dataframe and splits the data into train, validate, and test sets. """
-    train_and_validate, test = train_test_split(df, random_state=13, test_size=.15)
-    train, validate = train_test_split(train_and_validate, random_state=13, test_size=.2)
+    """ This function separates the data frame by years for the purpose of splitting our data into train, validate and test."""
+    # data for year 2015
+    y1 = df[(df.year == 2015)]
+    # data for year 2016
+    y2 = df[(df.year == 2016)]
+    # data for year 2017
+    y3 = df[(df.year == 2017)]
+    # data for year 2018
+    y4 = df[(df.year == 2018)]
+    # data for year 2019
+    y5 = df[(df.year == 2019)]
+    # data for year 2020
+    y6 = df[(df.year == 2020)]
+    # data for year 2021
+    y7 = df[(df.year == 2021)]
+    # data for year 2022
+    y8 = df[(df.year == 2022)]
+    # combining the data from years 2015 - 2019 into train
+    train = pd.concat([y1,y2,y3,y4,y5])
+    # combining data from years 2020 - 2021 into validate
+    validate = pd.concat([y6,y7])
+    # data for 2022 for test 
+    test = pd.concat([y8])
 
     print('Train: %d rows, %d cols' % train.shape)
     print('Validate: %d rows, %d cols' % validate.shape)
