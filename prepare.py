@@ -64,14 +64,14 @@ def position_column(df):
     df['position'] = df.club_position.map({'RW':'Right Wing',
                                        'ST': 'Striker',
                                        'LW': 'Left Wing',
-                                       'RCM': 'Right (off-centre) Centre Midfield',
+                                       'RCM': 'Right Centre Midfield',
                                        'GK': 'Goalkeeper',
                                        'CF': 'Centre Forward',
                                        'CDM': 'Centre Defensive Midfield',
                                        'LCB': 'Left Centre Back',
                                        'RDM':'Right Defensive Midfield',
                                        'RS': 'Right Striker',
-                                       'LCM':'Left (off-centre) Centre Midfield',
+                                       'LCM':'Left Centre Midfield',
                                        'SUB': 'Substitute',
                                        'CAM': 'Centre Attacking Midfield',
                                        'RCB':'Right Centre Back',
@@ -89,6 +89,37 @@ def position_column(df):
                                        'LF': 'Left Forward',
                                        'RAM': 'Right Attacking Midfield'
                         })
+    
+    #add a field position column
+    df['field_position'] = df.club_position.map({'ST': 'Forward',
+                                                 'CF': 'Forward',
+                                                 'LF': 'Forward',
+                                                 'LW': 'Forward',
+                                                 'RW': 'Forward',
+                                                 'LS': 'Forward',
+                                                 'RS': 'Forward',
+                                                 'LM': 'Midfielder', 
+                                                 'RM': 'Midfielder', 
+                                                 'LAM': 'Midfielder', 
+                                                 'RAM': 'Midfielder', 
+                                                 'CAM':'Midfielder', 
+                                                 'LDM': 'Midfielder', 
+                                                 'RDM': 'Midfielder', 
+                                                 'CDM': 'Midfielder', 
+                                                 'LCM': 'Midfielder', 
+                                                 'RCM': 'Midfielder',
+                                                 'CB': 'Defender', 
+                                                 'LB': 'Defender', 
+                                                 'LCB': 'Defender', 
+                                                 'RCB': 'Defender', 
+                                                 'RB':'Defender', 
+                                                 'LWB': 'Defender', 
+                                                 'RWB': 'Defender',
+                                                 'GK': 'Goalkeeper',
+                                                 'RES': 'Reserves',
+                                                 'SUB': 'Subs'  
+
+                                                })
     return df
 
 def column_positions(df):
