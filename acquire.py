@@ -44,7 +44,7 @@ def get_fifa_data():
         df7['year'] = 2016
         df8['year'] = 2015
         #combining dataframes
-        df = pd.concat([ df4, df5, df6])
+        df = pd.concat([df1,df2,df3,df4, df5, df6,df7,df8])
         #the following code to make into a csv file
         df.to_csv(filename, index = False)
         # Return the dataframe to the calling code

@@ -255,7 +255,17 @@ def wrangle_fifa_data(df):
     #expand the club_joined to get only the year from YYYY-MM-DD
     df['club_joined'] = df.club_joined.astype('str')
     df['year_joined'] = df.club_joined.str.split('-', expand = True)[0]
-    #change joined year to int
+    #adding a yearly wage
+    df['wage_year'] = (df.wage_eur) * 52
+    # addingng a league budget
+    df2 = df.groupby('league_name')['wage_eur'].agg(['sum']).reset_index().rename(columns={'sum':'league_yr_sum'})
+    df = pd.merge(df, df2, on='league_name')
+    df['league_yr_sum'] = (df.league_yr_sum) *52
+    # Adding club Yearly budget
+    df2 = df.groupby('club_name')['wage_eur'].agg(['sum']).reset_index().rename(columns={'sum':'club_name_yr_sum'})
+    df = pd.merge(df, df2, on='club_name')
+    df['club_name_yr_sum'] = (df.club_name_yr_sum) *52
+    # change joined year to int
     df.year_joined = df.year_joined.astype(int)
     #add seniority column
     df['seniority'] = df.year - df.year_joined
