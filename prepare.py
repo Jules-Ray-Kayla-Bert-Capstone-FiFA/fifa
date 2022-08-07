@@ -350,7 +350,7 @@ def get_encoded(df):
                                                     'heavy': 3
     })
     
-    df.weight_bins_encoded = pd.to_numeric(df.weight_bin_encoded, errors = 'coerce')
+    df.weight_bins_encoded = pd.to_numeric(df.weight_bins_encoded, errors = 'coerce')
     
     df['body_type_encoded'] = df.body_type.map({'Unique':1,
                                                 'Normal (170-185)':2,
