@@ -342,10 +342,15 @@ def get_encoded(df):
                                                       'younger':2
     })
     
+    df.age_bins_encoded = pd.to_numeric(df.age_bin_encoded, errors = 'coerce')
+    
+    
     df['weight_bins_encoded'] = df.weight_bins.map({ 'slim':1,
                                                       'average':2,
                                                     'heavy': 3
     })
+    
+    df.weight_bins_encoded = pd.to_numeric(df.weight_bin_encoded, errors = 'coerce')
     
     df['body_type_encoded'] = df.body_type.map({'Unique':1,
                                                 'Normal (170-185)':2,
