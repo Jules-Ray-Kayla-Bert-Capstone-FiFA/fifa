@@ -146,6 +146,9 @@ def position_column(df):
                                                  'SUB': 'Subs'  
 
                                                 })
+    
+   
+    
     return df
     
 
@@ -154,7 +157,7 @@ def column_positions(df):
     """ This function accepts a dataframe and rearranges columns in the desired sequence. """
         #changing the sequence of the columns
     sequence = ['sofifa_id', 'short_name', 'player_positions', 'overall', 'potential',
-       'value_eur', 'wage_eur', 'age', 'height_cm', 'weight_kg',
+       'value_eur', 'wage_eur', 'age', 'height_cm', 'weight_kg', 'bmi',
        'club_team_id', 'club_name', 'league_name','nationality_id', 'nationality_name', 'league_level',
        'club_position', 'position', 'field_position', 'club_joined', 'club_contract_valid_until','body_type',
         'preferred_foot', 'weak_foot',
@@ -289,7 +292,9 @@ def wrangle_fifa_data(df):
     df.year_joined = df.year_joined.astype(int)
     #add seniority column
     df['seniority'] = df.year - df.year_joined
-   
+    #add bmi column
+    df['bmi'] = df['weight_kg'] / (df['height_cm'] / 100) ** 2
+
     return df
 
 def get_encoded(df):
