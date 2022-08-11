@@ -289,7 +289,7 @@ def wrangle_fifa_data(df):
     df.year_joined = df.year_joined.astype(int)
     #add seniority column
     df['seniority'] = df.year - df.year_joined
-    #add bmi column df_20['weight_kg'] / (df_20['height_cm']/100)**2
+    #add bmi column 
     df['bmi'] = df['weight_kg'] / (df['height_cm']/100) ** 2
    
     return df
