@@ -359,8 +359,9 @@ def test(y_train,y_validate,X_train,X_validate,y_test,X_test):
 
     # evaluate: rmse
     rmse_test = mean_squared_error(y_test.wage_eur, y_test.wage_eur_pred_glm)**(1/2)
-    print("RMSE for GLM using Tweedie, power=1 & alpha=0\nTraining/In-Sample: ", rmse_train, 
-          "\nValidation/Out-of-Sample: ", rmse_validate_glm)
+    print("RMSE for GLM using Tweedie, power=1 & alpha=0\Out-of-Sample Performance: ", rmse_test)
+    
+    
 #################################################################    
 def overall_modeling(df):
     print("================================               OVERALL                 =====================================")
@@ -514,9 +515,7 @@ def goalkeeper_modeling(df):
 
     X_test = test[mvp]
     y_test = test[['wage_eur']]
-    y = pd.DataFrame(y_train.wage_eur)
-    baseline = y.mean()
-    print("Baseline : ",baseline)
+    
     modeling.create_baseline(y_train, y_validate,' wage_eur')
     modeling.tweedie_model(y_train,y_validate,X_train,X_validate)
     print("Lets take a look at the numbers:")
