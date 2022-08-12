@@ -515,7 +515,9 @@ def goalkeeper_modeling(df):
 
     X_test = test[mvp]
     y_test = test[['wage_eur']]
-    
+    y = pd.DataFrame(y_train.wage_eur)
+    baseline = y.mean()
+    print("Baseline : ",baseline)
     modeling.create_baseline(y_train, y_validate,' wage_eur')
     modeling.tweedie_model(y_train,y_validate,X_train,X_validate)
     print("Lets take a look at the numbers:")
