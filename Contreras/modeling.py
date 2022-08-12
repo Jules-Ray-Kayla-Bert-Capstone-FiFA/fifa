@@ -418,7 +418,7 @@ def forwards_modeling(df):
     print(y_validate)
     print("============================================= Test Data ====================================================")
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
-    y_test
+    print(y_test)
     fig = px.histogram(y_test.sample(n=1800, replace=False, random_state=123).sort_index())
     fig.show()
 #################################################################
@@ -449,7 +449,7 @@ def midfielder_modeling(df):
     print(y_validate)
     print("============================================= Test Data ====================================================")
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
-    y_test
+    print(y_test)
     fig = px.histogram(y_test.sample(n=1800, replace=False, random_state=123).sort_index())
     fig.show()
 #################################################################    
@@ -480,7 +480,7 @@ def defender_modeling(df):
     print(y_validate)
     print("============================================= Test Data ====================================================")
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
-    y_test
+    print(y_test)
     fig = px.histogram(y_test.sample(n=1800, replace=False, random_state=123).sort_index())
     fig.show()
 #################################################################
@@ -511,6 +511,6 @@ def goalkeeper_modeling(df):
     print(y_validate)
     print("============================================= Test Data ====================================================")
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
-    y_test
+    print(y_test)
     fig = px.histogram(y_test.sample(n=1000, replace=False, random_state=123).sort_index())
     fig.show()
