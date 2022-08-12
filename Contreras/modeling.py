@@ -389,7 +389,7 @@ def overall_modeling(df):
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
     print(y_test)
     fig = px.histogram(y_test.sample(n=1800, replace=False, random_state=123).sort_index())
-    fig.show()
+    fig.show(renderer="svg")
 #################################################################
 def forwards_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -420,7 +420,7 @@ def forwards_modeling(df):
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
     print(y_test)
     fig = px.histogram(y_test.sample(n=1800, replace=False, random_state=123).sort_index())
-    fig.show()
+    fig.show(renderer="svg")
 #################################################################
 def midfielder_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -451,7 +451,7 @@ def midfielder_modeling(df):
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
     print(y_test)
     fig = px.histogram(y_test.sample(n=1800, replace=False, random_state=123).sort_index())
-    fig.show()
+    fig.show(renderer="svg")
 #################################################################    
 def defender_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -482,7 +482,7 @@ def defender_modeling(df):
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
     print(y_test)
     fig = px.histogram(y_test.sample(n=1800, replace=False, random_state=123).sort_index())
-    fig.show()
+    fig.show(renderer="svg")
 #################################################################
 def goalkeeper_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -513,4 +513,5 @@ def goalkeeper_modeling(df):
     modeling.test(y_train,y_validate,X_train,X_validate,y_test,X_test)
     print(y_test)
     fig = px.histogram(y_test.sample(n=1000, replace=False, random_state=123).sort_index())
-    fig.show()
+    fig.show(renderer="svg")
+   
