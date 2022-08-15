@@ -430,7 +430,7 @@ def overall_modeling(df):
                  title = "Actual vs. Predicted",
             width = 800,
             height = 500)
-    fig.show(render = 'svg')
+    fig.show(renderer = 'svg')
 #################################################################
 def forwards_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -474,7 +474,7 @@ def forwards_modeling(df):
                  title = "Actual vs. Predicted",
             width = 800,
             height = 500)
-    fig.show(render = 'svg')
+    fig.show(renderer = 'svg')
 #################################################################
 def midfielder_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -517,7 +517,7 @@ def midfielder_modeling(df):
                  title = "Actual vs. Predicted",
             width = 800,
             height = 500)
-    fig.show(render = 'svg')
+    fig.show(renderer = 'svg')
 #################################################################    
 def defender_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -561,7 +561,7 @@ def defender_modeling(df):
                  title = "Actual vs. Predicted",
             width = 800,
             height = 500)
-    fig.show(render = 'svg')
+    fig.show(renderer = 'svg')
 #################################################################
 def goalkeeper_modeling(df):
     goalkeeper_df, forward_df, midfielder_df, defender_df = prepare.acquire_players_by_position(df)
@@ -604,4 +604,4 @@ def goalkeeper_modeling(df):
                  title = "Actual vs. Predicted",
             width = 800,
             height = 500)
-    fig.show(render = 'svg') #renderer="svg"
+    fig.show(renderer = 'svg') #renderer="svg"
