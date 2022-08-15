@@ -5,7 +5,6 @@ warnings.filterwarnings("ignore")
 #linear algebra
 import numpy as np
 import pandas as pd
-import geopandas as gpd
 
 #helper modules
 import acquire
