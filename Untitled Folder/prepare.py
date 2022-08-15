@@ -456,3 +456,40 @@ def acquire_players_by_position(df):
     df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders = split_substitute_players(substitute)
     goalkeeper_df, forward_df, midfielder_df, defender_df = concat_player_positions(goalkeepers, forwards, midfielders, defenders, df_reserve_goalkeepers, df_reserve_forwards, df_reserve_midfielders, df_reserve_defenders, df_substitute_goalkeeper, df_substitute_forward, df_substitute_midfielders, df_substitute_defenders)
     return goalkeeper_df, forward_df, midfielder_df, defender_df
+
+def dropgk_outliers(goalkeeper_df):
+    '''This function drops outliers from key features used for linear regression modeling..'''
+    goalkeeper_df.drop(goalkeeper_df[goalkeeper_df['overall'] > 83.5].index, inplace = True)
+    goalkeeper_df.drop(goalkeeper_df[goalkeeper_df['overall'] < 47.5].index, inplace = True)
+    goalkeeper_df.drop(goalkeeper_df[goalkeeper_df['gk_reflexes'] > 92.5].index, inplace = True)
+    goalkeeper_df.drop(goalkeeper_df[goalkeeper_df['gk_reflexes'] < 40.5].index, inplace = True)
+    return goalkeeper_df
+
+def dropd_outliers(defender_df):
+    defender_df.drop(defender_df[defender_df['overall'] > 81].index, inplace = True)
+    defender_df.drop(defender_df[defender_df['overall'] < 49].index, inplace = True)
+    defender_df.drop(defender_df[defender_df['defending'] > 79].index, inplace = True)
+    defender_df.drop(defender_df[defender_df['defending'] < 47].index, inplace = True)
+    return defender_df
+
+def goalkeeper_split(train_gk, validate_gk, test_gk):
+    X_train_goalkeeper = train_gk[["overall", "gk_reflexes"]]
+    y_train_goalkeeper = train_gk[['wage_eur']]
+
+    X_validate_goalkeeper = validate_gk[["overall", "gk_reflexes"]]
+    y_validate_goalkeeper = validate_gk[['wage_eur']]
+
+    X_test_goalkeeper = test_gk[["overall", "gk_reflexes"]]
+    y_test_goalkeeper = test_gk[['wage_eur']]
+    return X_train_goalkeeper, y_train_goalkeeper, X_validate_goalkeeper, y_validate_goalkeeper, X_test_goalkeeper, y_test_goalkeeper
+
+def defender_split(train_d, validate_d, test_d):
+    X_train_defender = train_d[['defending', 'overall']]
+    y_train_defender = train_d[['wage_eur']]
+
+    X_validate_defender = validate_d[['defending', 'overall']]
+    y_validate_defender = validate_d[['wage_eur']]
+
+    X_test_defender = test_d[['defending', 'overall']]
+    y_test_defender = test_d[['wage_eur']]
+    return X_train_defender, y_train_defender, X_validate_defender, y_validate_defender, X_test_defender, y_test_defender
