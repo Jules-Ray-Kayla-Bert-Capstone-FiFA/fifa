@@ -9,7 +9,7 @@ import pandas as pd
 
 #helper modules
 import acquire
-import prepare
+import prepare_final 
 import model
 import final_modeling
 import tests
@@ -31,7 +31,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 #visualizations
 import matplotlib.pyplot as plt
 import seaborn as sns
-from matplotlib import rcParams
+#from matplotlib import rcParams
 import plotly.express as px
 #imports to show interactive visuals on github
 import plotly.io as pio
