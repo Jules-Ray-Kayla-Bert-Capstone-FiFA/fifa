@@ -33,6 +33,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 #from matplotlib import rcParams
 import plotly.express as px
+from plotly.offline import plot, iplot, init_notebook_mode
+import plotly.graph_objs as go
+init_notebook_mode(connected=True)
 #imports to show interactive visuals on github
 import plotly.io as pio
 pio.renderers
