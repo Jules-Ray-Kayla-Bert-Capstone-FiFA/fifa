@@ -13,10 +13,10 @@ pio.renderers
 df = acquire.get_fifa_data()
 
 #prepare
-df = prepare.prepped_data(df)
+df = prepare_final.prepped_data(df)
 
 #train, test, split
-train, validate, test = prepare.split(df)
+train, validate, test = prepare_final.split(df)
 
 def viz_1():
     pop_clubs = ('Manchester City', 'FC Barcelona',  'Chelsea', 'Real Madrid CF', 'Juventus', 'Manchester United')
