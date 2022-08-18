@@ -291,6 +291,9 @@ def wrangle_fifa_data(df):
     df['seniority'] = df.year - df.year_joined
     #add bmi column 
     df['bmi'] = df['weight_kg'] / (df['height_cm']/100) ** 2
+    
+    #normalize Neymar
+    df.loc[df['short_name'] == 'Neymar Jr', 'short_name'] = 'Neymar'
    
     return df
 
