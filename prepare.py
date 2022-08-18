@@ -293,7 +293,10 @@ def wrangle_fifa_data(df):
     df['bmi'] = df['weight_kg'] / (df['height_cm']/100) ** 2
     
     #normalize Neymar
-    df.loc[df['short_name'] == 'Neymar Jr', 'short_name'] = 'Neymar'
+    df = df.loc[df['short_name'] == 'Neymar Jr', 'short_name'] = 'Neymar'
+    
+    #normalize Mbappé
+    df = df.loc[df['short_name'] == 'K. Mbappe Lottin', 'short_name'] = 'K. Mbappé'
    
     return df
 
